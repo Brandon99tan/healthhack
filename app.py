@@ -6,9 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():  # put application's code here
-    User = os.environ['USER']
-    Pass = os.environ['PASS']
-    return (f"User: {User} Pass: {Pass}")
+    return "gigi"
 
 @app.route('/vertex', methods=['GET'])
 def vertex(candidate_count=1, max_output_tokens=1024, temperature=0.9, top_p=1):
