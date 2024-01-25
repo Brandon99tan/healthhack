@@ -1,3 +1,5 @@
 Flask
 gunicorn
 json5
+google-cloud-aiplatform
+google-api-python-client
