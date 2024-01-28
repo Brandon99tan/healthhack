@@ -1,3 +1,4 @@
+import google.auth
 from flask import Flask, request, jsonify
 import vertexai
 import googleapiclient
@@ -7,9 +8,12 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():  # put application's code here
     return "gigi"
-
+def buildheader_body(text):
+    headers = {}
 @app.route('/vertex', methods=['GET'])
 def vertex(candidate_count=1, max_output_tokens=1024, temperature=0.9, top_p=1):
+    google.auth.default()
+
     print("vertex")
     from vertexai.language_models import ChatModel, InputOutputTextPair
     req = str(request.args.get("q"))
@@ -17,7 +21,7 @@ def vertex(candidate_count=1, max_output_tokens=1024, temperature=0.9, top_p=1):
     User = os.environ['USER']
     Pass = os.environ['PASS']
     print(User, Pass)
-    vertexai.init(project="fyp-ntu", location="us-central1")
+    vertexai.init(project="fyp-ntu", location="us-central1",credentials=(User,Pass))
     chat_model = ChatModel.from_pretrained("chat-bison")
     parameters = { #these are default param
         "candidate_count": candidate_count,
