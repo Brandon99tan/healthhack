@@ -12,7 +12,7 @@ def buildheader_body(text):
     headers = {}
 @app.route('/vertex', methods=['GET'])
 def vertex(candidate_count=1, max_output_tokens=1024, temperature=0.9, top_p=1):
-    google.auth.default()
+
 
     print("vertex")
     from vertexai.language_models import ChatModel, InputOutputTextPair
