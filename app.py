@@ -16,7 +16,7 @@ def vertex(candidate_count=1, max_output_tokens=1024, temperature=0.9, top_p=1):
     print(req)
     User = os.environ['USER']
     Pass = os.environ['PASS']
-
+    print(User, Pass)
     vertexai.init(project="fyp-ntu", location="us-central1")
     chat_model = ChatModel.from_pretrained("chat-bison")
     parameters = { #these are default param
