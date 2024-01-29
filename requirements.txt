@@ -4,4 +4,3 @@ json5
 google-cloud-aiplatform
 google-api-python-client
 requests
-json
