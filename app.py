@@ -2,14 +2,43 @@ import google.auth
 from flask import Flask, request, jsonify
 import vertexai
 import googleapiclient
+import requests
+import json
 import os
 app = Flask(__name__)
 
 @app.route('/')
 def hello_world():  # put application's code here
     return "gigi"
+@app.route('/send')
 def buildheader_body(text):
     headers = {}
+    accesstoken = "ya29.a0AfB_byDIEiPoS3tbfmEqLP2wzoFv4sYYJt3ZA9SEyx_qErPorm-OIteBpHjD2zBD6rMMbXA3yDBLTXwGD_DzP1X4UMTyxOpecJ-A68v4hCKDvBPeFp87u064n8JK7vykcgXJTcHUBWSvfLWMaY89QglQEP78OedH4XPY33nLYjIQpNXSF28q5NivP_2Q4F2ylgdTU-Me2k00rfcFFJquxDHxVVRz5N0-I7ZKa4kLB1EYzs2-7S-slZfTDhW4TBlchrW-PBme47XYvs-82DfFSIGgVFEHjcc-AdO7tLYAe_omsUXgI7P7fuVxG32KdvfTNoyG3mq2-R4TXx8PAnhY9n3V4SjYnhh9LT83m3MfDrwakDNlH9JAFNUPGEFXNH_I7XgIUIkd4qvaJph0buzokkRjF3OwEAAaCgYKAX4SARMSFQHGX2MiDH0Af_bjx4myUcriX7q2ug0422"
+    url = "https://us-central1-aiplatform.googleapis.com/v1/projects/healthhack-412317/locations/us-central1/publishers/google/models/text-bison:predict?access_token="+accesstoken
+    payload = json.dumps({
+        "instances": [
+            {
+                "prompt": "Give me ten interview questions for the role of program manager."
+            }
+        ],
+        "parameters": {
+            "temperature": 0.2,
+            "maxOutputTokens": 256,
+            "topK": 40,
+            "topP": 0.95,
+            "logprobs": 2
+        }
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print(response.text)
+
+
+
 @app.route('/vertex', methods=['GET'])
 def vertex(candidate_count=1, max_output_tokens=1024, temperature=0.9, top_p=1):
 
