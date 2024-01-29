@@ -12,23 +12,40 @@ def hello_world():  # put application's code here
     return "gigi"
 @app.route('/send')
 def buildheader_body():
-    headers = {}
     accesstoken = "ya29.a0AfB_byDIEiPoS3tbfmEqLP2wzoFv4sYYJt3ZA9SEyx_qErPorm-OIteBpHjD2zBD6rMMbXA3yDBLTXwGD_DzP1X4UMTyxOpecJ-A68v4hCKDvBPeFp87u064n8JK7vykcgXJTcHUBWSvfLWMaY89QglQEP78OedH4XPY33nLYjIQpNXSF28q5NivP_2Q4F2ylgdTU-Me2k00rfcFFJquxDHxVVRz5N0-I7ZKa4kLB1EYzs2-7S-slZfTDhW4TBlchrW-PBme47XYvs-82DfFSIGgVFEHjcc-AdO7tLYAe_omsUXgI7P7fuVxG32KdvfTNoyG3mq2-R4TXx8PAnhY9n3V4SjYnhh9LT83m3MfDrwakDNlH9JAFNUPGEFXNH_I7XgIUIkd4qvaJph0buzokkRjF3OwEAAaCgYKAX4SARMSFQHGX2MiDH0Af_bjx4myUcriX7q2ug0422"
     url = "https://us-central1-aiplatform.googleapis.com/v1/projects/healthhack-412317/locations/us-central1/publishers/google/models/text-bison:predict?access_token="+accesstoken
-    payload = json.dumps({
+    payload ={
         "instances": [
             {
-                "prompt": "Give me ten interview questions for the role of program manager."
+                "context": "You are to explain medical reports to people who does not understand complex terms. Please breakdown the medical jargons and explain it to them as simply as you can. Explain if it is a positive or negative result",
+                "examples": [
+                    {
+                        "input": {
+                            "author": "user",
+                            "content": "No Trichomonas or Candida organisms are seen."
+                        },
+                        "output": {
+                            "author": "bot",
+                            "content": "These are organisms that cause infections. Trichomonas is a protozoan parasite causing the sexually transmitted infection trichomoniasis, primarily affecting the urogenital tract in both men and women.\
+        While Candida is a genus of yeast, with Candida albicans being a common species that can cause various infections, including yeast infections in the genital or oral areas, skin, nails, and mucous membranes"
+                        }
+                    }
+                ],
+                "messages": [
+                    {
+                        "author": "user",
+                        "content": "Trichomonas or Candida organisms are seen."
+                    }
+                ]
             }
         ],
         "parameters": {
-            "temperature": 0.2,
-            "maxOutputTokens": 256,
-            "topK": 40,
-            "topP": 0.95,
-            "logprobs": 2
+            "candidateCount": 1,
+            "maxOutputTokens": 1024,
+            "temperature": 0.9,
+            "topP": 1
         }
-    })
+    }
     headers = {
         'Content-Type': 'application/json'
     }
