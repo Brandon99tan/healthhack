@@ -85,8 +85,8 @@ def vertex(candidate_count=1, max_output_tokens=1024, temperature=0.9, top_p=1):
 def run():
     import requests
     import json
-
-    access_token = "ya29.a0AfB_byBaYuMqumy8XMdZ-Xl66pfTcj_uUj0fMm6u81PB5RCro6iN_rZZeyuUFiNI40BCcQYFTgumbTbkpPqLJ9oaKcjoj9l1snRREzwzQUiI0M771loIoIIoNrRI4UQ6BRJ46gSy9Jg1TQVmRJwsAKoKWEvpc6emI86YjBvns65CgbT5I-D01WFm0jZht4r5Udg6JK1zsSC8fl7Ct2vnwc7Txl_KG38VAiAQkCT51mJ1DpRKE9CfiUI7e52GH05atMgAgtAIqEmrXfxHo45AzX-vq-mTdFNQ4T8OqLWHCAnuLdWnGg0-lTZkYLyZnczt1db2N5psoggwiD6rC6t1vjNJY2DHqqlPwuf5jhfuF69ezW4KxYcGDBx5dqXxlaJ5H_HjvhUogVoCU1sonyjH7OwdW2YP6rkaCgYKAU4SARMSFQHGX2MikYA-WIcNdTDOMFK8-S0mlQ0422"
+    question = "Trichomonas or Candida organisms are seen."
+    access_token = "ya29.a0AfB_byDDgIjh7FiC4cGKgiyxtHMKWWSm5wO1e9k1HvZigbzlpH4Aub-V-5nq-zZd8AAzJWz4zMcueKaab3s6nWRYPlaJDoztYWZt5fKyz9Ezni5YbakRpwzDQLSDNyVJIJjpUNAK-EK0yp9GxBK4zWl9GEZvoxuaQwtMRmX2YimZvdImztpI9kKnQGqjjCsl5jctwem4TiDHmfEqw7X2OqDrG0AyWSgeoLHVAbiTkyezkM8dL6VWqxWC5zQ5VzN6KaTExE7T-mD2-CLfBTxMYFpYbFk1R-ZTYdYaINX_70WTAVx9GIECuuu6MTDiQwQVrthmbuCSU4NP6WZnAPkBbbrVBa0l3g0rJAYejqy-g97hwUi7rx3AiRjQToDCL_k3BFmtwg5_Z5BaOK_ypN6Nbh4vPAWi6QIaCgYKAecSARMSFQHGX2Mi3fzNRZ2U0vM-rP7G1f-a9w0422"
     url = "https://us-central1-aiplatform.googleapis.com/v1/projects/healthhack-412317/locations/us-central1/publishers/google/models/chat-bison:predict?access_token="+access_token
 
     payload = json.dumps({
@@ -96,17 +96,18 @@ def run():
                 "examples": [
                     {
                         "input": {
-                            "content": "You have a temperature of 39 degree celcius"
+                            "content": "No Trichomonas or Candida organisms are seen."
                         },
                         "output": {
-                            "content": "you will feel weak and tired. Feeling hot. "
+                            "content": "These are organisms that cause infections. Trichomonas is a protozoan parasite causing the sexually transmitted infection trichomoniasis, primarily affecting the urogenital tract in both men and women.\
+    While Candida is a genus of yeast, with Candida albicans being a common species that can cause various infections, including yeast infections in the genital or oral areas, skin, nails, and mucous membranes. "
                         }
                     }
                 ],
                 "messages": [
                     {
                         "author": "User",
-                        "content": "No Trichomonas or Candida organisms are seen."
+                        "content": question
                     }
                 ]
             }
@@ -118,12 +119,14 @@ def run():
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
-    print(response)
-    response_json = response.json()
-    print(response_json)
-    print("--------")
-    print(response_json['predictions'][0]['candidates'][0]['content'])
-    return response_json['predictions'][0]['candidates'][0]['content']
-
+    print(response.status_code)
+    if response.status_code ==200:
+        response_json = response.json()
+        print(response_json)
+        print("--------")
+        # print(response_json['predictions'][0]['candidates'][0]['content']) #only for deployed on render
+        return (response_json['predictions'][0]['candidates'][0]['content'])
+    else:
+        return (response.text)
 if __name__ == '__main__':
     app.run()
