@@ -36,7 +36,7 @@ def buildheader_body():
     response = requests.request("POST", url, headers=headers, data=payload)
 
     print(response.text)
-    return response
+    return response.text
 
 
 
