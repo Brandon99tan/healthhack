@@ -4,3 +4,7 @@ json5
 google-cloud-aiplatform
 google-api-python-client
 requests
+PyPDF2
+pdfminer
+pdfminer.high_level
+pdfplumber
